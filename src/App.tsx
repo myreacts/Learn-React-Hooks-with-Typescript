@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 interface User {
   id: number;
@@ -26,9 +26,14 @@ function App() {
     return () => console.log("unmounting");
   }, [users]);
 
+  // 如果直接在onClick后面写函数，该函数会在组件每次渲染时重新创建
+  // 而useCallback包过的函数不会在组件渲染的时候重新创建
+  const addTwo = useCallback((): void => setCount((prev) => prev + 1), []);
+
   return (
     <>
-      <div>Hello</div>
+      <div>{count}</div>
+      <button onClick={addTwo}>Add</button>
     </>
   );
 }
