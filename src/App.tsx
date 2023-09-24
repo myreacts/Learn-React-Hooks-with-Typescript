@@ -1,9 +1,18 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 interface User {
   id: number;
   username: string;
 }
+
+type fibFunc = (n: number) => number;
+
+const fib: fibFunc = (n) => {
+  if (n < 2) return n;
+  return fib(n - 1) + fib(n - 2);
+};
+
+const myNum: number = 10;
 
 function App() {
   const [count, setCount] = useState<number>(0);
@@ -27,13 +36,17 @@ function App() {
   }, [users]);
 
   // 如果直接在onClick后面写函数，该函数会在组件每次渲染时重新创建
-  // 而useCallback包过的函数不会在组件渲染的时候重新创建
+  // 而useCallback包过的函数不会在组件渲染的时候重新创建(缓存函数)
   const addTwo = useCallback((): void => setCount((prev) => prev + 1), []);
+
+  // 缓存函数返回的结果
+  const result = useMemo<number>(() => fib(myNum), [myNum]);
 
   return (
     <>
       <div>{count}</div>
       <button onClick={addTwo}>Add</button>
+      <h2>{result}</h2>
     </>
   );
 }
