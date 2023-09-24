@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState, useRef } from "react";
 
 interface User {
   id: number;
@@ -17,6 +17,12 @@ const myNum: number = 10;
 function App() {
   const [count, setCount] = useState<number>(0);
   const [users, setUsers] = useState<User[] | null>(null);
+
+  // 用于存储一个值，组件不会因为值的改变而重新渲染
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  console.log(inputRef?.current);
+  console.log(inputRef?.current?.value);
 
   // 副作用: 与函数计算不相干的操作 eg: 修改标题、修改cookies...
   // useEffect是通用的副作用函数, 组件每渲染一次就会执行一次
@@ -47,6 +53,7 @@ function App() {
       <div>{count}</div>
       <button onClick={addTwo}>Add</button>
       <h2>{result}</h2>
+      <input ref={inputRef} type="text" />
     </>
   );
 }
